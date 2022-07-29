@@ -30,19 +30,35 @@ public class SecondActivity extends AppCompatActivity {
         try {
             SQLiteDatabase bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
 
-            bancoDados.execSQL("CREATE TABLE IF NOT EXISTS Professor(CPF Integer,\n" +
+            bancoDados.execSQL("CREATE TABLE IF NOT EXISTS Professor(CPF Varchar(11),\n" +
                     "  nome Varchar(100),\n" +
                     "  dataNascimento Date,\n" +
                     "  PRIMARY KEY (CPF))");
 
-            bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES (12312153726, 'Sabrina','01/01/1988')");
-            bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES (55448384102, 'Ana','02/02/1988')");
-            bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES (78591344383, 'Francine','03/03/1988')");
+            bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES ('55448384102', 'Ana','02/02/1988')");
+
+            Cursor cProf = bancoDados.rawQuery("SELECT CPF FROM Professor", null);
+
+            int incideCPF = cProf.getColumnIndex("CPF");
+         //   int indiceNome = cProf.getColumnIndex("nome");
+
+            cProf.moveToFirst();
+
+            while (cProf!=null){
+               // Log.i("Resultado - CPF: ", cProf.getString(incideCPF));
+                textSemana.append("Aqui: " + cProf.getString(incideCPF));
+
+                cProf.moveToNext();
+            }
+
+          //  bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES ('12312153726', 'Sabrina','01/01/1988')");
+          //  bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES ('55448384102', 'Ana','02/02/1988')");
+          //  bancoDados.execSQL("INSERT INTO Professor(CPF, nome, dataNascimento) VALUES ('78591344383', 'Francine','03/03/1988')");
 
             //bancoDados.execSQL("INSERT INTO CadastroAulas()"
 
-                    bancoDados.execSQL("CREATE TABLE IF NOT EXISTS CadastroAulas(codCadastroAulas Integer,\n" +
-                    "  CPFProfessor Integer,\n" +
+            /*        bancoDados.execSQL("CREATE TABLE IF NOT EXISTS CadastroAulas(codCadastroAulas Integer,\n" +
+                    "  CPFProfessor Varchar(11),\n" +
                     "  diaDaSemana Varchar(100),\n" +
                     "  descAula Varchar(100),\n" +
                     "  horarioAula Time,\n" +
@@ -68,7 +84,7 @@ public class SecondActivity extends AppCompatActivity {
                 Log.i("Resultado - Aula: ", cursor.getString(indicedescAula));
 
                 cursor.moveToNext();
-            }
+            } */
         }catch (Exception e){
             e.printStackTrace();
         }
