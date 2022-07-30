@@ -3,17 +3,24 @@ package com.example.classroomapp;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteStatement;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import java.text.Format;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class SecondActivity extends AppCompatActivity {
@@ -35,7 +42,7 @@ public class SecondActivity extends AppCompatActivity {
 
         textSemana = (TextView) findViewById(R.id.textSemana);
         carregaTextSemana();
-        
+
  /*       try {
             bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
 
@@ -105,13 +112,38 @@ public class SecondActivity extends AppCompatActivity {
         criarBancoDados();
         inserirAulas();
         ListarAulas();
+        selecionaAula();
+
+    }
+
+    private void selecionaAula() {
+        ListViewAulas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+
+                Toast.makeText(getApplicationContext(),
+                        "Clicou no item " + position, Toast.LENGTH_LONG).show();
+
+
+                Intent intent = new Intent(getApplicationContext(), ThirdActivity.class);
+                intent.putExtra("Chave", "OI");
+
+                startActivity(intent);
+            }
+        });
     }
 
     private void carregaTextSemana() {
+        Date data = new Date();
         Calendar cal = Calendar.getInstance();
-        cal.set(2022, 07, 27);
+        cal.setTime(data);
+        Format mesAtual = new SimpleDateFormat("MM");
+
         int semanaAtual = cal.get(Calendar.WEEK_OF_MONTH);
-        textSemana.setText(" Semana: " + Integer.toString(semanaAtual));
+
+        textSemana.setText("  Mês: " + mesAtual.format((cal.getTime())) + "/Semana: " + Integer.toString(semanaAtual));
     }
 
     private void criarBancoDados() {
@@ -131,17 +163,21 @@ public class SecondActivity extends AppCompatActivity {
         try {
             bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
 
-            String sql = "INSERT INTO CadastroAulas(descAula) VALUES (?)";
-            SQLiteStatement stmt = bancoDados.compileStatement(sql);
+            Cursor resultado = bancoDados.rawQuery("SELECT * FROM CadastroAulas", null);
 
-            stmt.bindString(1,"GENERAL ENGLISH");
-            stmt.executeInsert();
+            if (!resultado.moveToFirst()) {
+                String sql = "INSERT INTO CadastroAulas(descAula) VALUES (?)";
+                SQLiteStatement stmt = bancoDados.compileStatement(sql);
 
-            stmt.bindString(1,"CONVERSATION");
-            stmt.executeInsert();
+                stmt.bindString(1, "GENERAL ENGLISH");
+                stmt.executeInsert();
 
-            stmt.bindString(1,"BUSINESS ENGLISH");
-            stmt.executeInsert();
+                stmt.bindString(1, "CONVERSATION");
+                stmt.executeInsert();
+
+                stmt.bindString(1, "BUSINESS ENGLISH");
+                stmt.executeInsert();
+            }
 
             bancoDados.close();
         } catch (Exception e)
