@@ -1,6 +1,7 @@
 package com.example.classroomapp;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.collection.CircularArray;
 
 import android.content.Context;
 import android.content.Intent;
@@ -29,6 +30,7 @@ public class SecondActivity extends AppCompatActivity {
     public ListView ListViewAulas;
     private SQLiteDatabase bancoDados;
     private Context context;
+    public ArrayList<String> linhas;
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -112,27 +114,25 @@ public class SecondActivity extends AppCompatActivity {
         criarBancoDados();
         inserirAulas();
         ListarAulas();
-        selecionaAula();
+       // selecionaAula();
 
-    }
-
-    private void selecionaAula() {
         ListViewAulas.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
 
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
 
-                Toast.makeText(getApplicationContext(),
-                        "Clicou no item " + position, Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(),
+               //         "Clicou no item " + linhas.get(position), Toast.LENGTH_LONG).show();
 
 
                 Intent intent = new Intent(getApplicationContext(), ThirdActivity.class);
-                intent.putExtra("Chave", "OI");
+                intent.putExtra("Chave", linhas.get(position));
 
                 startActivity(intent);
             }
         });
+
     }
 
     private void carregaTextSemana() {
@@ -152,7 +152,10 @@ public class SecondActivity extends AppCompatActivity {
 
             bancoDados.execSQL("CREATE TABLE IF NOT EXISTS CadastroAulas(" +
                             "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                            "descAula VARCHAR)");
+                            "diaDaSemana VARCHAR," +
+                            "horarioAula Time," +
+                            "descAula VARCHAR," +
+                            "qtdMaximaAlunos INTEGER)");
             bancoDados.close();
         }catch (Exception e){
             e.printStackTrace();
@@ -166,16 +169,31 @@ public class SecondActivity extends AppCompatActivity {
             Cursor resultado = bancoDados.rawQuery("SELECT * FROM CadastroAulas", null);
 
             if (!resultado.moveToFirst()) {
-                String sql = "INSERT INTO CadastroAulas(descAula) VALUES (?)";
+                String sql = "INSERT INTO CadastroAulas(diaDaSemana, horarioAula, descAula, qtdMaximaAlunos) VALUES (?, ?, ?, ?)";
                 SQLiteStatement stmt = bancoDados.compileStatement(sql);
 
-                stmt.bindString(1, "GENERAL ENGLISH");
+                stmt.bindString(1,"Segunda");
+                stmt.bindString(2, "18:00");
+                stmt.bindString(3,"GENERAL ENGLISH");
+                stmt.bindString(4, "4");
                 stmt.executeInsert();
 
-                stmt.bindString(1, "CONVERSATION");
+                stmt.bindString(1,"Segunda");
+                stmt.bindString(2, "20:00");
+                stmt.bindString(3, "CONVERSATION");
+                stmt.bindString(4, "4");
                 stmt.executeInsert();
 
-                stmt.bindString(1, "BUSINESS ENGLISH");
+                stmt.bindString(1,"Quarta");
+                stmt.bindString(2, "18:00");
+                stmt.bindString(3, "BUSINESS ENGLISH");
+                stmt.bindString(4, "4");
+                stmt.executeInsert();
+
+                stmt.bindString(1,"Quarta");
+                stmt.bindString(2, "20:00");
+                stmt.bindString(3, "GENERAL ENGLISH");
+                stmt.bindString(4, "4");
                 stmt.executeInsert();
             }
 
@@ -191,9 +209,9 @@ public class SecondActivity extends AppCompatActivity {
         try{
             bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
 
-            Cursor cListaAulas =  bancoDados.rawQuery("SELECT id, descAula FROM CadastroAulas", null);
+            Cursor cListaAulas =  bancoDados.rawQuery("SELECT id, diaDaSemana, horarioAula, descAula, qtdMaximaAlunos FROM CadastroAulas", null);
 
-            ArrayList<String> linhas = new ArrayList<String>();
+          linhas = new ArrayList<String>();
 
             ArrayAdapter meuAdapter = new ArrayAdapter<String>(
                 this,
@@ -206,7 +224,10 @@ public class SecondActivity extends AppCompatActivity {
 
             cListaAulas.moveToFirst();
             while (cListaAulas!=null){
-                linhas.add(cListaAulas.getString(1));
+                linhas.add(cListaAulas.getString(1) + " - " +
+                           cListaAulas.getString(2) + " - " +
+                           cListaAulas.getString(3) + " - " +
+                           "Vagas: " + cListaAulas.getString(4));
                 cListaAulas.moveToNext();
             }
 

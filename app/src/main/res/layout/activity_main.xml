@@ -9,21 +9,28 @@
 
     <TextView
         android:id="@+id/txtHi"
-        android:layout_width="95dp"
-        android:layout_height="21dp"
+        android:layout_width="160dp"
+        android:layout_height="44dp"
+        android:layout_marginStart="8dp"
         android:shadowColor="@color/botao"
         android:text="Hi Students!"
         android:textColor="@color/texto2"
+        android:textSize="20sp"
+        android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.11"
+        app:layout_constraintHorizontal_bias="0.09"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.085" />
+        app:layout_constraintVertical_bias="0.147" />
 
     <LinearLayout
-        android:layout_width="326dp"
-        android:layout_height="358dp"
+        android:layout_width="350dp"
+        android:layout_height="369dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
         android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
@@ -36,8 +43,9 @@
             android:id="@+id/txtLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login"
-            android:textColor="@color/texto2" />
+            android:text="Login:"
+            android:textColor="@color/texto2"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edtLogin"
@@ -54,8 +62,9 @@
             android:id="@+id/txtSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Password"
-            android:textColor="@color/texto2" />
+            android:text="Password:"
+            android:textColor="@color/texto2"
+            android:textSize="20sp" />
 
         <EditText
             android:id="@+id/edtSenha"
@@ -74,10 +83,10 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@color/botao"
-            android:backgroundTint="@color/botao"
             android:onClick="clickBtnGo"
             android:text="Let´s GO!"
-            android:textColor="@color/texto" />
+            android:textColor="@color/texto"
+            app:rippleColor="@color/botao" />
 
     </LinearLayout>
 

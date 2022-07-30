@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void clickBtnGo(View view) {
         if(view == btnGo)
-            if(edtLogin.getText().toString().contains("Student")&&edtSenha.getText().toString().contains("123")){
+            if(edtLogin.getText().toString().contains("student")&&edtSenha.getText().toString().contains("123")){
                 Toast.makeText(getApplicationContext(),"Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
@@ -38,6 +38,5 @@ public class MainActivity extends AppCompatActivity {
             }
             else
                 Toast.makeText(getApplicationContext(),"Login inválido", Toast.LENGTH_SHORT).show();
-
     }
 }
