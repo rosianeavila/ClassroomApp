@@ -25,8 +25,8 @@
         app:layout_constraintVertical_bias="0.147" />
 
     <LinearLayout
-        android:layout_width="350dp"
-        android:layout_height="369dp"
+        android:layout_width="391dp"
+        android:layout_height="397dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -87,6 +87,20 @@
             android:text="Let´s GO!"
             android:textColor="@color/texto"
             app:rippleColor="@color/botao" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="34dp" />
+
+        <TextView
+            android:id="@+id/txtRegister"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|top"
+            android:onClick="clickTxtRegister"
+            android:selectAllOnFocus="false"
+            android:text="Register here!"
+            android:textColor="@color/texto2" />
 
     </LinearLayout>
 

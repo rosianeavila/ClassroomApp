@@ -13,7 +13,7 @@ import android.widget.Toast;
 public class MainActivity extends AppCompatActivity {
 
     private EditText edtLogin,edtSenha;
-    private TextView txtLogin,txtSenha;
+    private TextView txtLogin,txtSenha,txtRegister;
     private Button btnGo;
 
     @Override
@@ -26,6 +26,7 @@ public class MainActivity extends AppCompatActivity {
         btnGo = (Button) findViewById(R.id.btnGo);
         edtLogin = (EditText) findViewById(R.id.edtLogin);
         edtSenha = (EditText) findViewById(R.id.edtSenha);
+        txtRegister = (TextView) findViewById(R.id.txtRegister);
     }
 
     public void clickBtnGo(View view) {
@@ -39,4 +40,10 @@ public class MainActivity extends AppCompatActivity {
             else
                 Toast.makeText(getApplicationContext(),"Login inválido", Toast.LENGTH_SHORT).show();
     }
+
+    public void clickTxtRegister(View view){
+        Intent intent = new Intent(getApplicationContext(), FourthActivity.class);
+        startActivity(intent);
+    }
+
 }
