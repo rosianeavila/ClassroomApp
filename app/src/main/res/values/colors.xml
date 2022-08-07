@@ -7,8 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="fundo">#B995F8DB</color>
-    <color name="botao">#044C45</color>
+    <color name="fundo">#D5E6E0</color>
+    <color name="botao">#254D4C</color>
     <color name="texto">#FFFFFFFF</color>
-    <color name="texto2">#096A61</color>
+    <color name="texto2">#40836E</color>
 </resources>

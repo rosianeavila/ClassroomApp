@@ -20,4 +20,5 @@ public class AlunoDAO {
         values.put("senha", aluno.getSenha());
         return banco.insert("aluno", null, values);
     }
+
 }

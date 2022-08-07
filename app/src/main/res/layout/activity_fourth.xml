@@ -4,11 +4,12 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/fundo"
     tools:context=".FourthActivity">
 
     <LinearLayout
-        android:layout_width="409dp"
-        android:layout_height="531dp"
+        android:layout_width="384dp"
+        android:layout_height="564dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -23,44 +24,58 @@
             android:id="@+id/textView2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Nome:" />
+            android:text="Nome:"
+            android:textColor="@color/texto2" />
 
         <EditText
             android:id="@+id/editNome"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="@color/texto2" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Login:" />
+            android:text="Login:"
+            android:textColor="@color/texto2" />
 
         <EditText
             android:id="@+id/editLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textColor="@color/texto2" />
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="40dp" />
 
         <TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Senha:" />
+            android:text="Senha:"
+            android:textColor="@color/texto2" />
 
         <EditText
             android:id="@+id/editSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textColor="@color/texto2" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="50dp" />
+            android:layout_height="86dp" />
 
         <Button
             android:id="@+id/btnSalvar"
