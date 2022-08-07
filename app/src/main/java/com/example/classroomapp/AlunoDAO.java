@@ -4,6 +4,8 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.List;
+
 public class AlunoDAO {
     private Conexao conexao;
     private SQLiteDatabase banco;

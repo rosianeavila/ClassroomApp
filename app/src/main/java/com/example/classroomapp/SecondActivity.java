@@ -31,6 +31,7 @@ public class SecondActivity extends AppCompatActivity {
     private SQLiteDatabase bancoDados;
     private Context context;
     public ArrayList<String> linhas;
+    public Integer alunoIdLogado;
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -47,6 +48,9 @@ public class SecondActivity extends AppCompatActivity {
 
         ListViewAulas = (ListView) findViewById(R.id.ListViewAulas);
 
+        Intent intent = getIntent();
+        Integer alunoIdLogado = intent.getIntExtra("alunoIdLogado", 0);
+
         criarBancoDados();
         inserirProfessores();
         inserirAulas();
@@ -58,7 +62,8 @@ public class SecondActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view,
                                     int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ThirdActivity.class);
-                intent.putExtra("Chave", linhas.get(position));
+                intent.putExtra("selecionado", linhas.get(position));
+                intent.putExtra("alunoIdLogado", alunoIdLogado);
 
                 startActivity(intent);
             }
@@ -79,7 +84,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private void criarBancoDados() {
         try{
-            bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
+            bancoDados = openOrCreateDatabase("classRoomApp.db", MODE_PRIVATE, null);
 
             bancoDados.execSQL("CREATE TABLE IF NOT EXISTS professor(" +
                     "   id INTEGER PRIMARY KEY AUTOINCREMENT, "+
@@ -98,7 +103,7 @@ public class SecondActivity extends AppCompatActivity {
                     "   id INTEGER PRIMARY KEY AUTOINCREMENT, "+
                     "   idAluno INTEGER," +
                     "   idCadastroAulas INTEGER," +
-                    "   dataCheckin DATETIME, " +
+                    "   dataCheckin DATETIME DEFAULT CURRENT_TIMESTAMP, " +
                     "   FOREIGN KEY(idAluno) REFERENCES aluno(id)," +
                     "   FOREIGN KEY(idCadastroAulas) REFERENCES cadastroAulas(id))");
 
@@ -110,7 +115,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private void inserirProfessores() {
         try {
-            bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
+            bancoDados = openOrCreateDatabase("classRoomApp.db", MODE_PRIVATE, null);
 
             Cursor resultado = bancoDados.rawQuery("SELECT * FROM professor", null);
 
@@ -133,7 +138,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private void inserirAulas() {
         try {
-            bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
+            bancoDados = openOrCreateDatabase("classRoomApp.db", MODE_PRIVATE, null);
 
             Cursor resultado = bancoDados.rawQuery("SELECT * FROM cadastroAulas", null);
 
@@ -180,7 +185,7 @@ public class SecondActivity extends AppCompatActivity {
 
     private void ListarAulas() {
         try{
-            bancoDados = openOrCreateDatabase("classRoomApp", MODE_PRIVATE, null);
+            bancoDados = openOrCreateDatabase("classRoomApp.db", MODE_PRIVATE, null);
 
             Cursor cListaAulas =  bancoDados.rawQuery("SELECT a.id, a.diaDaSemana, a.horarioAula, a.descAula, b.nome, a.qtdMaximaAlunos " +
                                                           "FROM cadastroAulas a LEFT JOIN professor b WHERE a.idProfessor = b.id", null);

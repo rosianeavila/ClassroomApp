@@ -15,9 +15,8 @@ public class Conexao extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("create table aluno(id integer primary key autoincrement, " +
+        db.execSQL("CREATE TABLE IF NOT EXISTS aluno(id integer PRIMARY KEY AUTOINCREMENT, " +
                 "nome varchar(50), login varchar(50), senha varchar(50))");
-
     }
 
     @Override

@@ -22,6 +22,8 @@ public class MainActivity extends AppCompatActivity {
     private String login = null;
     private String senha = null;
     private Conexao conexao;
+    private Integer alunoIdLogado;
+    private String alunoNomeLogado;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,11 +42,12 @@ public class MainActivity extends AppCompatActivity {
         if(view == btnGo)
             login = edtLogin.getText().toString();
             senha = edtSenha.getText().toString();
-          //  if(edtLogin.getText().toString().contains("student")&&edtSenha.getText().toString().contains("123")){
             if(autenticaUsuario(login, senha)){
                 Toast.makeText(getApplicationContext(),"Login efetuado com sucesso", Toast.LENGTH_SHORT).show();
 
                 Intent intent = new Intent(getApplicationContext(), SecondActivity.class);
+                intent.putExtra("alunoIdLogado", alunoIdLogado);
+                intent.putExtra("alunoNomeLogado", alunoNomeLogado);
                 startActivity(intent);
             }
             else
@@ -56,12 +59,15 @@ public class MainActivity extends AppCompatActivity {
             conexao = new Conexao(this);
             bancoDados = conexao.getWritableDatabase();
 
-            Cursor resultado = bancoDados.rawQuery("SELECT login, senha FROM aluno WHERE login = " + "'" +  login + "'", null);
+            Cursor resultado = bancoDados.rawQuery("SELECT id, login, senha, nome FROM aluno WHERE login = " + "'" +  login + "'", null);
 
             while (resultado.moveToNext()) {
-                if (login.equals(resultado.getString(0))){
-                    if (senha.equals(resultado.getString(1)))
+                if (login.equals(resultado.getString(1))){
+                    if (senha.equals(resultado.getString(2))){
+                        alunoIdLogado = Integer.parseInt(resultado.getString(0));
+                        alunoNomeLogado = resultado.getString(3);
                         return true;
+                    }
                 }
             }
             bancoDados.close();
