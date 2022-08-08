@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import java.text.Format;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -26,12 +27,14 @@ import java.util.GregorianCalendar;
 
 public class SecondActivity extends AppCompatActivity {
 
-    private TextView textSemana;
+    private TextView textSemana, textHello;
     public ListView ListViewAulas;
     private SQLiteDatabase bancoDados;
     private Context context;
     public ArrayList<String> linhas;
     public Integer alunoIdLogado;
+    private Integer qtdCheckins = 0;
+    private String dtIncioSemana, dtFinalSemana;
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -49,7 +52,10 @@ public class SecondActivity extends AppCompatActivity {
         ListViewAulas = (ListView) findViewById(R.id.ListViewAulas);
 
         Intent intent = getIntent();
-        Integer alunoIdLogado = intent.getIntExtra("alunoIdLogado", 0);
+        alunoIdLogado = intent.getIntExtra("alunoIdLogado", 0);
+
+        textHello = (TextView) findViewById(R.id.textHello);
+        textHello.setText("Welcome " + intent.getStringExtra("alunoNomeLogado") + "!");
 
         criarBancoDados();
         inserirProfessores();
@@ -79,7 +85,7 @@ public class SecondActivity extends AppCompatActivity {
 
         int semanaAtual = cal.get(Calendar.WEEK_OF_MONTH);
 
-        textSemana.setText("  Mês: " + mesAtual.format((cal.getTime())) + "/Semana: " + Integer.toString(semanaAtual));
+        textSemana.setText("  Mês:" + mesAtual.format((cal.getTime())) + " / Semana:" + Integer.toString(semanaAtual));
     }
 
     private void criarBancoDados() {
@@ -190,7 +196,7 @@ public class SecondActivity extends AppCompatActivity {
             Cursor cListaAulas =  bancoDados.rawQuery("SELECT a.id, a.diaDaSemana, a.horarioAula, a.descAula, b.nome, a.qtdMaximaAlunos " +
                                                           "FROM cadastroAulas a LEFT JOIN professor b WHERE a.idProfessor = b.id", null);
 
-          linhas = new ArrayList<String>();
+            linhas = new ArrayList<String>();
 
             ArrayAdapter meuAdapter = new ArrayAdapter<String>(
                 this,
@@ -203,17 +209,63 @@ public class SecondActivity extends AppCompatActivity {
 
             cListaAulas.moveToFirst();
             while (cListaAulas!=null){
+                qtdCheckins = CalculaQtdChechins(alunoIdLogado, Integer.parseInt(cListaAulas.getString(0)));
+
                 linhas.add(cListaAulas.getString(0) + " - " +
                            cListaAulas.getString(1) + " - " +
                            cListaAulas.getString(2) + " - " +
                            cListaAulas.getString(3) + " - " +
                            cListaAulas.getString(4) + " - " +
-                           "Vagas: " + cListaAulas.getString(5));
+                           "Vagas: " + qtdCheckins.toString() + "/" + cListaAulas.getString(5));
                 cListaAulas.moveToNext();
             }
 
         }catch(Exception e){
             e.printStackTrace();
         }
+    }
+
+    private Integer CalculaQtdChechins(Integer alunoIdLogado, Integer idAula) {
+        try {
+            dtIncioSemana = retornaDiaInicialeDiaFinalSemana(true);
+            dtFinalSemana = retornaDiaInicialeDiaFinalSemana(false);
+
+            bancoDados = openOrCreateDatabase("classRoomApp.db", MODE_PRIVATE, null);
+
+            Cursor resultado = bancoDados.rawQuery("SELECT * FROM checkins a where" +
+                    " a.idAluno = " + alunoIdLogado + " and a.idCadastroAulas = " + idAula +
+                    " and a.dataCheckin BETWEEN " + "'" + dtIncioSemana + " 00:00:00" + "'" + " AND " + "'" + dtFinalSemana + " 23:59:00" + "'", null);
+
+            if (resultado.moveToFirst()) {
+                return resultado.getCount();
+            }
+
+            bancoDados.close();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        return 0;
+    }
+
+    //Função que calcula o dia que começou a semana e o dia que terminara.
+    public static String retornaDiaInicialeDiaFinalSemana(boolean isPrimeiro) {
+
+        //Seta a data atual.
+        Date dataAtual = new Date();
+
+        GregorianCalendar calendar = new GregorianCalendar();
+        //Define que a semana começa no domingo.
+        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
+        //Define a data atual.
+        calendar.setTime(dataAtual);
+
+        if (isPrimeiro) {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
+        } else {
+            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
+        }
+
+        SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
+        return formatador.format(calendar.getTime());
     }
 }
