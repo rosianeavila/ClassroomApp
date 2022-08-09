@@ -2,6 +2,7 @@ package com.example.classroomapp;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -14,7 +15,7 @@ public class FourthActivity extends AppCompatActivity {
     private EditText editNome, editLogin,editSenha;
     private Button btnSalvar;
     private AlunoDAO dao;
-    boolean isAllFieldsChecked = false;
+    boolean isAllFieldsChecked = true;
     boolean isStudentExists = false;
     private SQLiteDatabase bancoDados;
 
@@ -30,19 +31,28 @@ public class FourthActivity extends AppCompatActivity {
         dao = new AlunoDAO(this);
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(this, MainActivity.class);
+        //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+    }
+
     public void salvarAluno(View view){
         isAllFieldsChecked = CheckAllFields();
         isStudentExists = CheckStudentExists();
 
-        if ((isAllFieldsChecked) & (!isStudentExists)) {
-          Aluno a = new Aluno();
-          a.setNome(editNome.getText().toString());
-          a.setLogin(editLogin.getText().toString());
-          a.setSenha(editSenha.getText().toString());
-          long id = dao.inserir(a);
+        if (isAllFieldsChecked) {
+            if  (!isStudentExists) {
+                Aluno a = new Aluno();
+                 a.setNome(editNome.getText().toString());
+                 a.setLogin(editLogin.getText().toString());
+                 a.setSenha(editSenha.getText().toString());
+                long id = dao.inserir(a);
 
-          limpaCampos();
-          Toast.makeText(this, "Aluno inserido com sucesso!", Toast.LENGTH_SHORT).show();
+                limpaCampos();
+                Toast.makeText(this, "Aluno inserido com sucesso!", Toast.LENGTH_SHORT).show();
+            }
         }
     }
 

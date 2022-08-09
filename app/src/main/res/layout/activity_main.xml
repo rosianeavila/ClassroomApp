@@ -9,20 +9,24 @@
 
     <TextView
         android:id="@+id/txtHi"
-        android:layout_width="160dp"
+        android:layout_width="385dp"
         android:layout_height="44dp"
         android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:fontFamily="monospace"
         android:shadowColor="@color/botao"
         android:text="Hi Students!"
+        android:textAlignment="center"
         android:textColor="@color/texto2"
-        android:textSize="20sp"
+        android:textSize="30sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.032"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.139" />
+        app:layout_constraintVertical_bias="0.129" />
 
     <LinearLayout
         android:layout_width="384dp"
@@ -43,7 +47,9 @@
             android:id="@+id/txtLogin"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="Login:"
+            android:textAlignment="textStart"
             android:textColor="@color/texto2"
             android:textSize="20sp" />
 
@@ -52,17 +58,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPersonName" />
+            android:inputType="textPersonName"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="64dp" />
+            android:layout_height="64dp"
+            android:textAlignment="textStart" />
 
         <TextView
             android:id="@+id/txtSenha"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:fontFamily="monospace"
             android:text="Password:"
+            android:textAlignment="textStart"
             android:textColor="@color/texto2"
             android:textSize="20sp" />
 
@@ -71,11 +83,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:ems="10"
-            android:inputType="textPassword" />
+            android:inputType="textPassword"
+            android:textAlignment="textStart"
+            android:textColor="@color/black"
+            android:textSize="20sp" />
 
         <Space
             android:layout_width="match_parent"
-            android:layout_height="35dp" />
+            android:layout_height="34dp" />
 
         <Button
             android:id="@+id/btnGo"
@@ -85,8 +100,11 @@
             android:background="@color/botao"
             android:onClick="clickBtnGo"
             android:text="Let´s GO!"
+            android:fontFamily="sans-serif-black"
             android:textColor="@color/texto"
-            app:rippleColor="@color/botao" />
+            app:rippleColor="@color/botao"
+            android:textSize="16sp"
+            android:textAlignment="center"/>
 
         <Space
             android:layout_width="match_parent"
@@ -100,7 +118,10 @@
             android:onClick="clickTxtRegister"
             android:selectAllOnFocus="false"
             android:text="Register here!"
-            android:textColor="@color/texto2" />
+            android:fontFamily="monospace"
+            android:textColor="@color/texto2"
+            android:textSize="16sp"
+            android:textAlignment="center"/>
 
     </LinearLayout>
 

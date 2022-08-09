@@ -29,12 +29,13 @@ public class SecondActivity extends AppCompatActivity {
 
     private TextView textSemana, textHello;
     public ListView ListViewAulas;
-    private SQLiteDatabase bancoDados;
+    public SQLiteDatabase bancoDados;
     private Context context;
     public ArrayList<String> linhas;
     public Integer alunoIdLogado;
-    private Integer qtdCheckins = 0;
-    private String dtIncioSemana, dtFinalSemana;
+    public Integer qtdCheckins = 0;
+    private String alunoNomeLogado;
+    private Funcoes funcoes;
 
     @Override
     public void onPointerCaptureChanged(boolean hasCapture) {
@@ -53,9 +54,10 @@ public class SecondActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
         alunoIdLogado = intent.getIntExtra("alunoIdLogado", 0);
+        alunoNomeLogado = intent.getStringExtra("alunoNomeLogado");
 
         textHello = (TextView) findViewById(R.id.textHello);
-        textHello.setText("Welcome " + intent.getStringExtra("alunoNomeLogado") + "!");
+        textHello.setText("Welcome " + alunoNomeLogado + "!");
 
         criarBancoDados();
         inserirProfessores();
@@ -70,6 +72,7 @@ public class SecondActivity extends AppCompatActivity {
                 Intent intent = new Intent(getApplicationContext(), ThirdActivity.class);
                 intent.putExtra("selecionado", linhas.get(position));
                 intent.putExtra("alunoIdLogado", alunoIdLogado);
+                intent.putExtra("alunoNomeLogado", alunoNomeLogado);
 
                 startActivity(intent);
             }
@@ -209,7 +212,8 @@ public class SecondActivity extends AppCompatActivity {
 
             cListaAulas.moveToFirst();
             while (cListaAulas!=null){
-                qtdCheckins = CalculaQtdChechins(alunoIdLogado, Integer.parseInt(cListaAulas.getString(0)));
+                Funcoes funcoes = new Funcoes(this);
+                qtdCheckins = funcoes.CalculaQtdChechins(alunoIdLogado, Integer.parseInt(cListaAulas.getString(0)));
 
                 linhas.add(cListaAulas.getString(0) + " - " +
                            cListaAulas.getString(1) + " - " +
@@ -223,49 +227,5 @@ public class SecondActivity extends AppCompatActivity {
         }catch(Exception e){
             e.printStackTrace();
         }
-    }
-
-    private Integer CalculaQtdChechins(Integer alunoIdLogado, Integer idAula) {
-        try {
-            dtIncioSemana = retornaDiaInicialeDiaFinalSemana(true);
-            dtFinalSemana = retornaDiaInicialeDiaFinalSemana(false);
-
-            bancoDados = openOrCreateDatabase("classRoomApp.db", MODE_PRIVATE, null);
-
-            Cursor resultado = bancoDados.rawQuery("SELECT * FROM checkins a where" +
-                    " a.idAluno = " + alunoIdLogado + " and a.idCadastroAulas = " + idAula +
-                    " and a.dataCheckin BETWEEN " + "'" + dtIncioSemana + " 00:00:00" + "'" + " AND " + "'" + dtFinalSemana + " 23:59:00" + "'", null);
-
-            if (resultado.moveToFirst()) {
-                return resultado.getCount();
-            }
-
-            bancoDados.close();
-        }catch(Exception e){
-            e.printStackTrace();
-        }
-        return 0;
-    }
-
-    //Função que calcula o dia que começou a semana e o dia que terminara.
-    public static String retornaDiaInicialeDiaFinalSemana(boolean isPrimeiro) {
-
-        //Seta a data atual.
-        Date dataAtual = new Date();
-
-        GregorianCalendar calendar = new GregorianCalendar();
-        //Define que a semana começa no domingo.
-        calendar.setFirstDayOfWeek(Calendar.SUNDAY);
-        //Define a data atual.
-        calendar.setTime(dataAtual);
-
-        if (isPrimeiro) {
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SUNDAY);
-        } else {
-            calendar.set(Calendar.DAY_OF_WEEK, Calendar.SATURDAY);
-        }
-
-        SimpleDateFormat formatador = new SimpleDateFormat("yyyy-MM-dd");
-        return formatador.format(calendar.getTime());
     }
 }
